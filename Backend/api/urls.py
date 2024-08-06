@@ -1,12 +1,9 @@
 from django.urls import path,include
-from rest_framework.routers import DefaultRouter
-
-myrouter =DefaultRouter()
-'''
-Registered Urls of class-based views (ModeViewSet) under Myrouter
-'''
-urlpatterns = myrouter
+from users.views import *
+from chat.views import *
 
 urlpatterns = [
-    path("",include(myrouter.urls))
+    path("register",UserView.as_view(),name="Register-User"),
+    # path("login",)
+    # path("chats")
 ]
