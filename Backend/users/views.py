@@ -3,20 +3,28 @@ from rest_framework.response import Response
 from .serializers import *
 from .models import *
 from rest_framework.exceptions import NotFound
-
+from rest_framework.authentication import SessionAuthentication, BasicAuthentication
+from rest_framework.permissions import IsAuthenticated
 # Create your views here.
 
 class UserView(APIView):
+    authentication_classes = [SessionAuthentication, BasicAuthentication]
+    permission_classes = [IsAuthenticated]
     def get(self,request):
-        user_datas=UserSerializer(NewUser.objects.all(),many=True)
-        return Response(user_datas.data)
+        return Response({
+            "User":"str(request.user)",
+            "Auth":"str(request.auth)"
+        })
     
     def post(self,request):
         user_datas=UserSerializer(data=request.data)
         if user_datas.is_valid():
             user_datas.save()
             uname = user_datas.validated_data.get("username")
-            return Response({"Message":f"User {uname} registered successfully"})
+            return Response({
+                "Message":"Successfully Registered",
+                "Logged-In":f"{NewUser.objects.get(username=uname).is_authenticated}"
+            })        
         else:
             return Response(user_datas.errors)
         
@@ -49,5 +57,3 @@ class UserView(APIView):
             return Response({"Message":f"User {obj.username} is deleted"})
         else:
             raise NotFound(f"User of Username {delete_user} doesn't exists")
-
-            

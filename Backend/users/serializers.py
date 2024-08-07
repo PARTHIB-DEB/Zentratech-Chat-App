@@ -1,7 +1,5 @@
 from rest_framework import serializers
-from rest_framework.validators import UniqueTogetherValidator
 from .models import NewUser
-
 
 class UserSerializer(serializers.ModelSerializer):
     class Meta:
@@ -66,3 +64,4 @@ class UserSerializer(serializers.ModelSerializer):
         instance.save()
         return instance
     
+
