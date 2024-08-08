@@ -13,7 +13,10 @@ class UserView(APIView):
     permission_classes = [IsAuthenticated]
 
     def get(self, request):
-        return Response({"User": "str(request.user)", "Auth": "str(request.auth)"})
+        return Response({
+            "user": f"{str(request.user)}",
+            "receivers":f"{list(NewUser.objects.values_list("username", flat=True).exclude(username=request.user.username))}"
+        })
 
     def post(self, request):
         user_datas = UserSerializer(data=request.data)
