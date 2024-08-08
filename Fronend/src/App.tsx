@@ -1,11 +1,20 @@
 // import { useState } from 'react'
 import './App.css'
+import Getreq from './components/getreq'
+import Login from './components/login'
+import Register from './components/register'
+import Sendreq from './components/sendreq'
 
 function App() {
   // const [count, setCount] = useState(0)
-
+  
   return (
-    <h1 className='text-5xl'>React Django Chat-App</h1>
+    <>
+    <Register/>
+    <Sendreq/>
+    <Getreq/>
+    <Login/>
+    </>
   )
 }
 
