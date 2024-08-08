@@ -46,15 +46,13 @@ class newUserManager(UserManager):
 
 
 class NewUser(AbstractUser):
-    """
-    This model is used to redefine the user model with additional fields
-    and enhanced username validation.
-    """
 
     first_name = models.CharField(max_length=150)
     last_name = models.CharField(max_length=150)
     email = models.EmailField(unique=True)
     recid = models.CharField()
+    req_sent = models.IntegerField(default=0)
+    req_got = models.IntegerField(default=0)
 
     REQUIRED_FIELDS = ["email", "first_name", "last_name"]  # Include required fields
 
