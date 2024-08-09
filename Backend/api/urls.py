@@ -5,6 +5,7 @@ from chat.consumers import *
 
 urlpatterns = [
     path("register", UserView.as_view(), name="Register-User"),
+    path("request",Requestview.as_view(),name="Friend-Request"),
     path(
         "auth", include("rest_framework.urls", namespace="rest_framework")
     ),  # auth/login -> login , auth/logout -> logout
