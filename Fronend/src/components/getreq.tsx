@@ -5,7 +5,7 @@ interface uobj{
     "senders":string[]
 }
 async function GetSenderNames() {
-    const respone = await fetch("http://127.0.0.1:8000/api/register",{mode:'cors'})
+    const respone = await fetch("http://127.0.0.1:8000/api/request",{mode:'cors'})
     const responsearray:uobj =  await respone.json()
     return responsearray
 }
@@ -21,23 +21,9 @@ export default function Getreq () {
         }
         UseSenderNames()
     })
-    async function postreq(sender:string) {
-        try {
-         
-             const payload:object={
-                "sender":user,
-                "receiver":sender
-             }
- 
-             await fetch("http://127.0.0.1:8000/api/request",{
-                method:"POST",
-                mode:"cors",
-                body:JSON.stringify(payload)
-             })
-        } catch (error) {
-             console.log(`ERROR : ${error}`)
-        } 
-     }
+    function acceptreq(sender:string) {
+        alert(`request of ${sender} is accepted`)
+    }
     return (
         <div className="user-form h-1/2 w-1/2 font-normal rounded-lg flex flex-col justify-evenly items-center bg-white shadow-purple-400 shadow-md">
             <p className="text-center flex justify-center text-2xl md:text-4xl underline">{user}'s Friend Requests</p>
@@ -45,7 +31,7 @@ export default function Getreq () {
                 usernameArray.map((sender)=>(
                     <div className="fr-list flex justify-center items-center gap-x-[2rem] h-[2rem] w-[90%] md:w-[80%]">
                         <p className="Fr-Name h-full w-1/2 text-center text-xl md:text-2xl">{sender}</p>
-                        <button className="accept-btn h-full w-1/4 bg-blue-600 text-white hover:bg-purple-900" onClick={()=>postreq(sender)}>Accept</button>
+                        <button className="accept-btn h-full w-1/4 bg-blue-600 text-white hover:bg-purple-900" onClick={()=>acceptreq(sender)}>Accept</button>
                         <button className="reject-btn h-full w-1/4 bg-red-600 text-white hover:bg-orange-900">Decline</button>
                     </div>
                 ))
