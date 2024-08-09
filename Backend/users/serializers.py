@@ -63,3 +63,8 @@ class UserSerializer(serializers.ModelSerializer):
 
         instance.save()
         return instance
+
+
+class RequestSerialiser(serializers.Serializer):
+    sender = serializers.CharField()
+    receiver = serializers.CharField()
