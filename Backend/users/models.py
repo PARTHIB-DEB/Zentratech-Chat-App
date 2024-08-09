@@ -50,7 +50,6 @@ class NewUser(AbstractUser):
     first_name = models.CharField(max_length=150)
     last_name = models.CharField(max_length=150)
     email = models.EmailField(unique=True)
-    recid = models.CharField()
     req_sent = models.IntegerField(default=0)
     req_got = models.IntegerField(default=0)
 
