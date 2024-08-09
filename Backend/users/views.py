@@ -32,32 +32,25 @@ class UserView(APIView):
         else:
             return Response(user_datas.errors)
 
-    def put(self, request):
-        data = request.data
-        update_user = data["username"]
-        user_datas = UserSerializer(data=data)
-        if user_datas.is_valid():
-            user_datas.save()
-            return Response({"Message": f"User {update_user} is updated completely"})
-        else:
-            return Response(user_datas.errors)
 
-    def patch(self, request):
-        data = request.data
-        update_user = data["username"]
-        user_datas = UserSerializer(data=data, partial=True)
-        if user_datas.is_valid():
-            user_datas.save()
-            return Response({"Message": f"User {update_user} is updated"})
+class Requestview(APIView):
+    authentication_classes = [SessionAuthentication, BasicAuthentication]
+    permission_classes = [IsAuthenticated]
+    
+    def get(self,request):
+        return Response({
+            "user":f"{NewUser.objects.get(req_got=1).username}",
+            "sender":f"{[request.user]}"
+        })
+    
+    def post(self,request):
+        data = RequestSerialiser(data=request.data)
+        if data.is_valid():
+            senderobj = NewUser.objects.get(username=data.validated_data.get("sender"))
+            senderobj.req_sent = 1
+            senderobj.save()
+            receiverobj = NewUser.objects.get(username=data.validated_data.get("receiver"))
+            receiverobj.req_got = 1
+            receiverobj.save()
         else:
-            return Response(user_datas.errors)
-
-    def delete(self, request):
-        data = request.data
-        delete_user = data["username"]
-        if len(delete_user) >= 5:
-            obj = NewUser.objects.get(username=delete_user)
-            obj.delete()
-            return Response({"Message": f"User {obj.username} is deleted"})
-        else:
-            raise NotFound(f"User of Username {delete_user} doesn't exists")
+            raise ValidationError("Friend Request Data Is Not in Proper Format")
