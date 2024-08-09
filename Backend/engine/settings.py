@@ -125,6 +125,20 @@ REST_FRAMEWORK = {
 # Database
 # https://docs.djangoproject.com/en/5.0/ref/settings/#databases
 
+DATABASES = {
+    'default': {
+        'ENGINE': 'django.db.backends.postgresql',
+        'NAME': 'zentra',
+        'USER': 'zen',
+        'PASSWORD': 'zentra',
+        'HOST': '127.0.0.1',
+        'PORT': '5432',
+        "TEST": {
+            "NAME": "TestZentra",
+        },
+    }
+}
+
 
 # Password validation
 # https://docs.djangoproject.com/en/5.0/ref/settings/#auth-password-validators
