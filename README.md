@@ -1,4 +1,4 @@
-# Upnyx Backend Assignment
+# Zentratech Full Stack Chat App
 This repository consists the assignment for Senior Python Developer Position at Zentratech.
 
 ## Project Description
