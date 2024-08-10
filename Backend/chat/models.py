@@ -5,8 +5,8 @@ import datetime
 # Create your models here.
 
 class NewChat(models.Model):
-    sender_username = models.ForeignKey(NewUser,on_delete=models.CASCADE)
-    receiver_username = models.ForeignKey(NewUser,on_delete=models.CASCADE)
+    sender_username = models.ForeignKey(NewUser,on_delete=models.CASCADE , related_name="sender_username")
+    receiver_username = models.ForeignKey(NewUser,on_delete=models.CASCADE , related_name="receiver_username")
     Date = models.DateField(default=datetime.date.today)
     start_time = models.TimeField(default=datetime.datetime.now().second)
     end_time = models.TimeField(default=datetime.datetime.now().second)
