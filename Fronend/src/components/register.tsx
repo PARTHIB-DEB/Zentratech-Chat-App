@@ -1,44 +1,98 @@
-interface input_props{
-    width:string,
-    padding:string,
-    small_text_weight:string,
-    large_text_weight:string,
+import React, { useState } from 'react';
+
+interface InputProps {
+    width: string,
+    smallwidth: string,
+    padding: string,
+    smallpadding : string,
+    smallTextWeight: string,
+    largeTextWeight: string,
+    color :string,
+    round:"rounded-lg"
 }
-let input_obj : input_props={
-    width : "w-[90%]",
-    padding : "p-[0.2rem]",
-    small_text_weight : "text-base",
-    large_text_weight : "md:text-lg"
+
+let inputObj: InputProps = {
+    width: "md:w-[50%]",
+    smallwidth: "w-[90%]",
+    padding: "p-[0.2rem]",
+    smallpadding : "p-0",
+    smallTextWeight: "text-base",
+    largeTextWeight: "md:text-lg",
+    color:"bg-slate-200",
+    round:"rounded-lg"
 }
-export default function Register () {
-    const props_stack = `${input_obj.width}${input_obj.padding}${input_obj.small_text_weight}${input_obj.large_text_weight}`
-  return (
-    <div className="user-form h-1/2 w-1/2 font-normal rounded-lg flex flex-col justify-evenly items-center bg-white shadow-purple-400 shadow-md">
-        <p className="text-center flex justify-center text-2xl md:text-4xl underline">Registration{" "}Form</p>
-        <div className="username flex justify-center items-center">
-            <label htmlFor="username" className="text-xl md:text-2xl">Username : </label>
-            <input type="text" name="username" id="username" className={props_stack} placeholder="Enter Your Username"/>
-        </div>
-        <div className="email flex justify-center items-center">
-            <label htmlFor="email" className="text-xl md:text-2xl">Email : </label>
-            <input type="text" name="email" id="email" className="{props_stack}" placeholder="Enter Your Email"/>
-        </div>
-        <div className="first_name flex justify-center items-center">
-            <label htmlFor="first_name" className="text-xl md:text-2xl">First-Name : </label>
-            <input type="text" name="first_name" id="first_name" className="{props_stack}" placeholder="Enter Your First-name"/>
-        </div>
-        <div className="last_name flex justify-center items-center">
-            <label htmlFor="last_name" className="text-xl md:text-2xl">Last-Name : </label>
-            <input type="text" name="last_name" id="last_name" className="{props_stack}" placeholder="Enter Your Last-name"/>
-        </div>
-        <div className="password1 flex justify-center items-center">
-            <label htmlFor="password1" className="text-xl md:text-2xl">Password : </label>
-            <input type="text" name="password1" id="password1" className="{props_stack}" placeholder="Enter Your Password"/>
-        </div>
-        <div className="password2 flex justify-center items-center">
-            <label htmlFor="password2" className="text-xl md:text-2xl">Confirm-Password : </label>
-            <input type="text" name="password2" id="password2" className="{props_stack}" placeholder="Confirm Password"/>
-        </div>
-    </div>
-  )
+
+function getcsrftoken() {
+    const match = document.cookie.match(new RegExp('(^| )csrftoken=([^;]+)'));
+    return match ? match[2] : '';
+}
+
+export default function Login() {
+
+    
+    // State to store form data
+    const [formData, setFormData] = useState({
+        username: '',
+        password: ''
+    });
+
+    // Handle input changes
+    const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+        setFormData({ ...formData, [e.target.name]: e.target.value });
+    };
+
+    const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+        e.preventDefault();
+
+        try {
+            const csrfToken = getcsrftoken();
+            const response = await fetch('http://127.0.0.1:8000/api/register', {
+                mode:"cors",
+                method: 'POST',
+                headers: {
+                    "Content-Type": 'application/json',
+                    "X-CSRFTtoken": csrfToken
+                },
+                body: JSON.stringify(formData),
+            });
+
+            if (response.ok) {
+                const data = await response.json();
+                alert(`Login successful! Token: ${data.token}`);
+            } else {
+                alert("Login failed");
+            }
+        } catch (error) {
+            alert(`An error occurred: ${error}`);
+        }
+    };
+
+    const propsStack = `${inputObj.smallwidth} ${inputObj.width} ${inputObj.padding} ${inputObj.smallTextWeight} ${inputObj.largeTextWeight} ${inputObj.color} ${inputObj.round}`;
+
+    return (
+        <form onClick={handleSubmit} method="post" action='/register' className="user-form w-screen md:w-[50rem] h-[30rem] font-normal rounded-lg flex flex-col justify-center items-center gap-y-[2rem] bg-white">
+            <p className="text-center flex justify-center text-2xl md:text-4xl underline">Register User</p>
+            <div className="username flex justify-center items-center gap-x-2 w-[80%]">
+                <label htmlFor="username" className="text-base md:text-2xl">Username:</label>
+                <input type="text" name="username" id="username" className={propsStack} placeholder="Enter Your Username" onChange={handleChange} />
+            </div>
+            <div className="first-name flex justify-center items-center gap-x-2 w-[80%]">
+                <label htmlFor="first-name" className="text-base md:text-2xl">Username:</label>
+                <input type="text" name="first-name" id="first-name" className={propsStack} placeholder="Enter Your first-name" onChange={handleChange} />
+            </div>
+            <div className="last-name flex justify-center items-center gap-x-2 w-[80%]">
+                <label htmlFor="last-name" className="text-base md:text-2xl">Username:</label>
+                <input type="text" name="last-name" id="last-name" className={propsStack} placeholder="Enter Your last-name" onChange={handleChange} />
+            </div>
+            <div className="email flex justify-center items-center gap-x-2 w-[80%]">
+                <label htmlFor="email" className="text-base md:text-2xl">Email:</label>
+                <input type="email" name="email" id="email" className={propsStack} placeholder="Enter Your Email" onChange={handleChange} />
+            </div>
+            <div className="password flex justify-center items-center gap-x-2 w-[80%]">
+                <label htmlFor="password" className="text-base md:text-2xl">Password:</label>
+                <input type="password" name="password" id="password" className={propsStack} placeholder="Enter Your Password" onChange={handleChange} />
+            </div>
+            <button className='rounded-lg h-[1.8rem] md:h-[3rem] w-[6rem] md:w-[7rem] text-lg md:text-xl bg-blue-500 text-center' type='submit'>Submit</button>
+        </form>
+    )
 }
