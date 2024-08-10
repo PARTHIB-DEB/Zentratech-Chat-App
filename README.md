@@ -37,7 +37,7 @@ source venv/bin/activate
 **Backend**
 - Django (5.0.7)
 - Django REST Framework (3.15.2)
-- Django-cors-headers
+- Django-cors-headers (4.4.0)
 - Psycopg3 (psycopg[binary,pool] - 3.2.1)
 - Pytest (8.3.2) and Pytest-django (0.23.8)
 - daphne (4.1.2)
