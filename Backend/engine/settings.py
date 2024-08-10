@@ -15,6 +15,7 @@ https://docs.djangoproject.com/en/5.0/ref/settings/
 will have to run `daphne --root-path=/forum django_project.asgi:application` after complete models and views setup of both apps
 """
 
+import os
 from pathlib import Path
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
@@ -30,24 +31,24 @@ SECRET_KEY = "django-insecure-5w^(79!78(reo7j&=o@5852fd#0@63fka!8^0k$!4$4lf@=fi0
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ["127.0.0.1"]
-
+ALLOWED_HOSTS = ["localhost","127.0.0.1"]
 
 # Application definition
+os.environ.setdefault("DJANGO_ALLOW_ASYNC_UNSAFE","true")
 
 INSTALLED_APPS = [
+    "daphne",
+    "channels",
     "django.contrib.admin",
     "django.contrib.auth",
     "django.contrib.contenttypes",
     "django.contrib.sessions",
     "django.contrib.messages",
     "django.contrib.staticfiles",
-    "chat",  # Django App
-    "users",  # Django App
     "corsheaders",  # CORS
     "rest_framework",  # DRF
-    "daphne",
-    "channels",
+    "chat",  # Django App
+    "users"  # Django App
 ]
 
 MIDDLEWARE = [
@@ -62,13 +63,9 @@ MIDDLEWARE = [
 ]
 
 CORS_ALLOWED_ORIGINS = [
-    "http://localhost:5173",
-    "http://127.0.0.1:5173",
-    "http://localhost:5174",
-    "http://127.0.0.1:5174",
+    "http://localhost:5173"
 ]
-
-CORS_URLS_REGEX = r"^/api/.*$"
+CSRF_TRUSTED_ORIGINS = ["http://localhost:5173"]
 
 CORS_ALLOW_METHODS = (
     "DELETE",
@@ -81,15 +78,18 @@ CORS_ALLOW_METHODS = (
 CORS_ALLOW_HEADERS = (
     "accept",
     "authorization",
-    "content-type",
+    "Content-Type",
     "user-agent",
-    "x-csrftoken",
+    "X-CSRFTtoken",
     "x-requested-with",
 )
 
+CORS_ALLOW_ALL_ORIGINS = True
+CORS_ALLOW_CREDENTIALS = True
+
 ROOT_URLCONF = "engine.urls"
 
-AUTH_USER_MODEL = "users.newuser"
+AUTH_USER_MODEL = "users.NewUser"
 
 TEMPLATES = [
     {
@@ -109,7 +109,7 @@ TEMPLATES = [
 
 WSGI_APPLICATION = "engine.wsgi.application"
 ASGI_APPLICATION = (
-    "engine.asgi.application"  # For creating a server based on ASGI rules
+    "engine.asgi.application"  
 )
 
 CHANNEL_LAYERS = {"default": {"BACKEND": "channels.layers.InMemoryChannelLayer"}}
