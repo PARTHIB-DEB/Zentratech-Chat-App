@@ -16,8 +16,8 @@ export default function Getreq () {
     useEffect(()=>{
         async function UseSenderNames(){
             const name = await GetSenderNames()
-            setUsernameArray(name.senders)
-            setUser(name.user)
+            setUsernameArray(name.senders || [])
+            setUser(name.user || "")
         }
         UseSenderNames()
     })
@@ -25,16 +25,18 @@ export default function Getreq () {
         alert(`request of ${sender} is accepted`)
     }
     return (
-        <div className="user-form h-1/2 w-1/2 font-normal rounded-lg flex flex-col justify-evenly items-center bg-white shadow-purple-400 shadow-md">
-            <p className="text-center flex justify-center text-2xl md:text-4xl underline">{user}'s Friend Requests</p>
+        <div className="user-form h-[30rem] w-[60rem] font-normal rounded-lg flex flex-col justify-evenly items-center bg-white">
+            <p className="text-center flex justify-center text-2xl md:text-4xl underline">{user} Friend Requests</p>
             {
-                usernameArray.map((sender)=>(
-                    <div className="fr-list flex justify-center items-center gap-x-[2rem] h-[2rem] w-[90%] md:w-[80%]">
-                        <p className="Fr-Name h-full w-1/2 text-center text-xl md:text-2xl">{sender}</p>
-                        <button className="accept-btn h-full w-1/4 bg-blue-600 text-white hover:bg-purple-900" onClick={()=>acceptreq(sender)}>Accept</button>
-                        <button className="reject-btn h-full w-1/4 bg-red-600 text-white hover:bg-orange-900">Decline</button>
-                    </div>
-                ))
+                usernameArray.length > 0 ?(
+                    usernameArray.map((sender)=>(
+                        <div className="fr-list flex justify-center items-center gap-x-[2rem] h-[2rem] w-[90%] md:w-[80%]">
+                            <p className="Fr-Name h-full w-1/2 text-center text-xl md:text-2xl">{sender}</p>
+                            <button className="accept-btn h-full w-1/4 bg-blue-600 text-white hover:bg-purple-900" onClick={()=>acceptreq(sender)}>Accept</button>
+                            <button className="reject-btn h-full w-1/4 bg-red-600 text-white hover:bg-orange-900">Decline</button>
+                        </div>
+                    ))
+                ):(<p>No users found</p>)
             }
         </div>
     );
